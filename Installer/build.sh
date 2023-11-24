@@ -1,14 +1,45 @@
-RELEASE_TIMESTAMP=$(date +%Y-%m-%d)
+#!/bin/bash
 
-RELEASE_INC_VERSION=$(cat Updates/build_version.txt)
-RELEASE_INC_VERSION=$((RELEASE_INC_VERSION+1))
+# File containing numbers
+FOLDER="Additional_Files"
+FILE="${FOLDER}/clients"
+CONFIG_FOLDER="${FOLDER}/configs"
+KEY_FOLDER="${FOLDER}/keys"
 
-RELEASE_TYPE="canary"
+# Checking if the file exists
+if [ ! -f "$FILE" ]; then
+    echo "File $FILE not found."
+    exit 1
+fi
 
-RELEASE_VERSION="2.0.7.${RELEASE_INC_VERSION}"
-RELEASE_NAME="${RELEASE_VERSION}_${RELEASE_TYPE}_${RELEASE_TIMESTAMP}"
+UPDATE_SOURCE="$1"
+pushd "${UPDATE_SOURCE}"
+mkdir "Build"
+mv * "Build/"
+popd
 
-RELEASE_FILE_NAME="duplicati-${RELEASE_NAME}"
+BUILD="${UPDATE_SOURCE}/Build"
 
-export RUNTMP=$HOME
-bash Installer/bundleduplicati.sh $RELEASE_FILE_NAME 0
+# Read the file line by line
+while IFS= read -r line; do
+    # Assuming each line contains a single number
+    client="$line"
+
+    config_file="${CONFIG_FOLDER}/config${client}.json"
+    key_file="${KEY_FOLDER}/key${client}"
+
+    # Check if config file exists
+    if [ ! -f "$config_file" ] || [ ! -f "$key_file" ]; then
+        echo "Credentials for client with number: $client not found"
+        continue
+    fi
+    echo "Building files for client: ${client}"
+    build_name="${BUILD}${client}"
+    cp -r "${BUILD}" "${build_name}"
+    cp "$config_file" "${build_name}/webroot/config.json"
+    cp "$key_file" "${build_name}/key"
+    
+    pushd "${build_name}"
+    7z a -tzip "../${client}_build.zip" ./*
+    popd
+done < "$FILE"
