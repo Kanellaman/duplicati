@@ -1,8 +1,8 @@
 name: Compile_Project
 
 on:
-  workflow_dispatch
-
+  push
+  
 env:
   build_directory: "Duplicati/GUI/Duplicati.GUI.TrayIcon/bin/Release"
 
