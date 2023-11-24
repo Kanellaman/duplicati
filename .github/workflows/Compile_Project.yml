@@ -41,6 +41,7 @@ jobs:
 
     - name: Compile Program
       run: |
+          chmod +x Installer/build.sh
           Installer/build.sh
 
     - name: Upload build results
