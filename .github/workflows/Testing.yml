@@ -6,7 +6,7 @@ on:
       num:
         description: number_of_clients
         required: true
-        default: '1'
+        default: '2'
       server:
         description: 'Remote Server'
         required: true
