@@ -1,7 +1,16 @@
 name: Process Arguments
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      num:
+        description: number_of_clients
+        required: true
+        default: '1'
+      server:
+        description: 'Remote Server'
+        required: true
+        default: 'linux'
 
 jobs:
   process_arguments:
@@ -9,5 +18,5 @@ jobs:
     steps:
       - name: Display Arguments
         run: |
-          echo "Argument 1: ${{ github.event.inputs.argument1 }}"
-          echo "Argument 2: ${{ github.event.inputs.argument2 }}"
+          echo "Argument 1: ${{ github.event.inputs.num }}"
+          echo "Argument 2: ${{ github.event.inputs.server }}"
