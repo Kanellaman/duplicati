@@ -51,18 +51,18 @@ rm -rf "${UPDATE_SOURCE}/"*.xml;
 find  . -type f -name ".DS_Store" | xargs rm -rf
 find  . -type f -name "Thumbs.db" | xargs rm -rf
 if [ $2 -eq 0 ]; then
-bash Installer/test.sh "${UPDATE_SOURCE}"
-# bundle everything info a zip file
-pushd "${UPDATE_SOURCE}"
-rm -rf Build*
-mkdir -p $RUNTMP/artifacts
-mv * $RUNTMP/artifacts/
-popd
-rm -rf "${UPDATE_SOURCE}"
+	bash Installer/test.sh "${UPDATE_SOURCE}"
+	# bundle everything info a zip file
+	pushd "${UPDATE_SOURCE}"
+	rm -rf Build*
+	mkdir -p $RUNTMP/artifacts
+	mv * $RUNTMP/artifacts/
+	popd
+	rm -rf "${UPDATE_SOURCE}"
 else
-# bundle everything info a zip file
-pushd "${UPDATE_SOURCE}"
-7z a -tzip -r "${ZIPRESULT}"
-popd
-rm "${UPDATE_SOURCE}" -rf
+	# bundle everything info a zip file
+	pushd "${UPDATE_SOURCE}"
+	7z a -tzip -r "${ZIPRESULT}"
+	popd
+	rm "${UPDATE_SOURCE}" -rf
 fi
