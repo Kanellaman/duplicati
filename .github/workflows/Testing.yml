@@ -1,0 +1,13 @@
+name: Process Arguments
+
+on:
+  workflow_dispatch
+
+jobs:
+  process_arguments:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display Arguments
+        run: |
+          echo "Argument 1: ${{ github.event.inputs.argument1 }}"
+          echo "Argument 2: ${{ github.event.inputs.argument2 }}"
