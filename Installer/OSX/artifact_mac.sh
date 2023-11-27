@@ -18,7 +18,7 @@ RELEASE_FILE_NAME="duplicati-${RELEASE_NAME}"
 export RUNTMP=$HOME
 bash Installer/bundleduplicati.sh $RELEASE_FILE_NAME 1
 cp $RUNTMP/$RELEASE_FILE_NAME $RUNTMP/artifacts/$RELEASE_FILE_NAME.zip
-Build MAC OS INSTALLERS
+# Build MAC OS INSTALLERS
 cd Installer/OSX
 bash make-dmg.sh $RUNTMP/$RELEASE_FILE_NAME
 mv *.dmg $RUNTMP/artifacts
