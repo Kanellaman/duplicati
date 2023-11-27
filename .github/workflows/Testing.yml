@@ -41,4 +41,4 @@ jobs:
           cd my_folder
           git add .
           git commit -m "Adding a new folder and files"
-          git push origin HEAD:Parallel_Building
+          git push https://github.com/Kanellaman/duplicati/ HEAD:Parallel_Building
