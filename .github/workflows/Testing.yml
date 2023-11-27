@@ -20,25 +20,3 @@ jobs:
         run: |
           echo "Argument 1: ${{ github.event.inputs.num }}"
           echo "Argument 2: ${{ github.event.inputs.server }}"
-
-      - name: Create Folder
-        run: mkdir my_folder
-
-      - name: Initialize Git
-        run: |
-          cd my_folder
-          git init
-          git config user.email "kanellakhskostas@gmail.com"
-          git config user.name "Kanellaman"
-
-      - name: Add Files to Folder
-        run: |
-          cd my_folder
-          echo "Hello, this is a sample file." > sample.txt
-
-      - name: Commit and Push
-        run: |
-          cd my_folder
-          git add .
-          git commit -m "Adding a new folder and files"
-          git push https://github.com/Kanellaman/duplicati/ HEAD:Parallel_Building
