@@ -1,45 +1,21 @@
-#!/bin/bash
+# Installation instructions when building locally (March 2023)
+# add ppa https://download.mono-project.com/repo/ubuntu stable-focal main
+# install p7zip, build-essential, debhelper, dpkg-dev, mono-devel,
+# libappindicator0.1-cil-dev, ca-certificates-mono, gtk-sharp2
 
-# File containing numbers
-FOLDER="Additional_Files"
-FILE="${FOLDER}/clients"
-CONFIG_FOLDER="${FOLDER}/configs"
-KEY_FOLDER="${FOLDER}/keys"
+RELEASE_TIMESTAMP=$(date +%Y-%m-%d)
 
-# Checking if the file exists
-if [ ! -f "$FILE" ]; then
-    echo "File $FILE not found."
-    exit 1
-fi
+RELEASE_INC_VERSION=$(cat Updates/build_version.txt)
+RELEASE_INC_VERSION=$((RELEASE_INC_VERSION+1))
 
-UPDATE_SOURCE="$1"
-pushd "${UPDATE_SOURCE}"
-mkdir "Build"
-mv * "Build/"
-popd
+RELEASE_TYPE="canary"
 
-BUILD="${UPDATE_SOURCE}/Build"
+RELEASE_VERSION="2.0.7.${RELEASE_INC_VERSION}"
+RELEASE_NAME="${RELEASE_VERSION}_${RELEASE_TYPE}_${RELEASE_TIMESTAMP}"
 
-# Read the file line by line
-while IFS= read -r line; do
-    # Assuming each line contains a single number
-    client="$line"
+RELEASE_FILE_NAME="duplicati-${RELEASE_NAME}"
 
-    config_file="${CONFIG_FOLDER}/config${client}.json"
-    key_file="${KEY_FOLDER}/key${client}"
-
-    # Check if config file exists
-    if [ ! -f "$config_file" ] || [ ! -f "$key_file" ]; then
-        echo "Credentials for client with number: $client not found"
-        continue
-    fi
-    echo "Building files for client: ${client}"
-    build_name="${BUILD}${client}"
-    cp -r "${BUILD}" "${build_name}"
-    cp "$config_file" "${build_name}/webroot/config.json"
-    cp "$key_file" "${build_name}/key"
-    
-    pushd "${build_name}"
-    7z a -tzip "../${client}_build.zip" ./*
-    popd
-done < "$FILE"
+export RUNTMP=$HOME
+bash Installer/bundleduplicati.sh $RELEASE_FILE_NAME 1
+cp $RUNTMP/$RELEASE_FILE_NAME $RUNTMP/artifacts/$RELEASE_FILE_NAME.zip
+Build MAC OS INSTALLERS
